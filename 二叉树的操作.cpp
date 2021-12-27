@@ -139,6 +139,7 @@ void CreatHuffmanTree(HuffmanTree& HT, int n, int num[])
 	}
 	for (int i = 1; i <= n; ++i)//输入前n个单元中叶子结点的权值
 		HT[i].weight = num[i-1];
+		//cin >> HT[i].weight;
 /*- - - - - -初始化工作结束，开始创建哈夫曼树- - - - - -*/
 	for (int i = n + 1; i <= m; ++i)
 	{//通过n-1次的选择、删除、合并来创建哈夫曼树
@@ -175,7 +176,7 @@ void CreatHuffmanCode(HuffmanTree HT, HuffmanCode& HC, int n)
 		HC[i] = new char[n - start];//为第i个字符编码分配空间
 		strcpy_s(HC[i], strlen(&cd[start]) + 1, &cd[start]);//将求得的编码从临时空间cd复制到HC的当前行中
 	}
-	delete cd;//释放临时空间
+	delete[] cd;//释放临时空间
 }
 
 //计算WPL
@@ -186,7 +187,7 @@ int HuffmanWPL(HuffmanTree HT, int n)
 	int m = 2 * n - 1, wpl = 0;
 	for (int i = 1; i <= m; ++i)
 	{//求非叶子节点权值的和，左右孩子都不存在的结点为非叶子节点
-		if (HT[i].lchild == 0 && HT[i].rchild == 0)
+		if (HT[i].lchild != 0 && HT[i].rchild != 0)
 			wpl += HT[i].weight;
 	}
 	return wpl;

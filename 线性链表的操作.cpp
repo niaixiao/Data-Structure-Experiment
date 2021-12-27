@@ -30,8 +30,7 @@ void CreatList_H(LinkList& L, int n)
 		p = new LNode;
 		cin >> p->data;
 		//将新结点插到头指针后面
-		p->next = L->next;
-		L->next = p;
+		p->next = L->next; L->next = p;
 	}
 }
 
@@ -47,8 +46,7 @@ void CreatList_R(LinkList& L, int n)
 		p = new LNode;
 		cin >> p->data;
 		//将新结点插到表尾
-		r->next = p;
-		r = p;
+		r->next = p; r = p;
 	}
 	r->next = NULL;
 }
@@ -60,7 +58,7 @@ void ShowList(LinkList L)
 	if (p == NULL)
 		cout << "空！";
 	while (p != NULL)
-	{
+	{//依次打印链表元素
 		cout << " " << p->data << " ";
 		p = p->next;
 	}
@@ -73,9 +71,7 @@ LNode* LocateElem(LinkList L, ElemType e)
 	LNode* p;				//用于遍历表
 	p = L->next;			//初始化，p指向首元结点
 	while (p && p->data != e)
-	{
-		p = p->next;
-	}
+		p = p->next;//遍历表，直到找到与e相等的元素
 	return p;
 }
 
@@ -91,14 +87,14 @@ void ListInsert(LinkList& L, int i, ElemType e)
 		++j;
 	}
 	if (!p || j > i - 1)
-	{
+	{//判断插入位置是否合理
 		cout << "插入位置不合理!" << endl;
 		return ERROR;
 	}
 	s = new LNode;
 	s->data = e;
-	s->next = p->next;
-	p->next = s;
+	//插入结点s
+	s->next = p->next; p->next = s;
 	cout << "插入成功！" << endl;
 }
 
@@ -128,14 +124,14 @@ void ListDelete(LinkList& L, int i)
 LinkList Order(LinkList& L)
 {
 	LNode* p, * q;//创建新结点用于L中的元素比较大小
-	//进行简单冒泡排序
+	//进行简单选择排序
 	for (p = L->next; p != NULL; p = p->next)
-	{
+	{//p向后移动，序列长度减小
 		for (q = p->next; q != NULL; q = q->next)
-		{
+		{//选出当前子序列最小的元素，赋值给p->data
 			if (p->data > q->data)
 			{
-				int i = p->data;
+				ElemType i = p->data;
 				p->data = q->data;
 				q->data = i;
 			}
@@ -192,13 +188,18 @@ int main()
 {
 	LNode* head;
 	int wm = 0;
-	InitList(head);
+	InitList(head);//初始化链表
 
 	while (true)
 	{
 		showMenu();
 		cout << "请输入操作代码：";
-		cin >> wm;
+		if (!(cin >> wm))
+		{//错误输入时重新输入，防止死循环
+			cin.clear();
+			cin.ignore(1024, '\n');
+			wm = -1;
+		}
 
 		switch (wm)
 		{
@@ -207,7 +208,7 @@ int main()
 			system("pause");
 			return 0;
 			break;
-		case 1:
+		case 1://建立单链表
 			int n;
 			cout << "请输入数据量：";
 			cin >> n;
@@ -215,13 +216,13 @@ int main()
 			system("pause");
 			system("cls");
 			break;
-		case 2:
+		case 2://显示单链表
 			cout << "当前链表为：" << endl;
 			ShowList(head);
 			system("pause");
 			system("cls");
 			break;
-		case 3:
+		case 3://查找单链表
 			ElemType eA;
 			cout << "请输入查找数据的值：";
 			cin >> eA;
@@ -229,7 +230,7 @@ int main()
 			system("pause");
 			system("cls");
 			break;
-		case 4:
+		case 4://插入单链表
 			int iB;
 			ElemType eB;
 			cout << "请输入插入数据的位置：";
@@ -240,7 +241,7 @@ int main()
 			system("pause");
 			system("cls");
 			break;
-		case 5:
+		case 5://删除单链表
 			int iC;
 			cout << "请输入删除数据的位置：";
 			cin >> iC;
@@ -248,20 +249,16 @@ int main()
 			system("pause");
 			system("cls");
 			break;
-		case 6:
+		case 6://两个单链表合并
 		{
 			LNode* LA, * LB, * LC;
-			InitList(LA);
-			InitList(LB);
-			InitList(LC);
+			InitList(LA); InitList(LB); InitList(LC);//初始化链表
 			//新建链表LA和LB
 			int nA, nB;
 			cout << "请输入链表LA的数据量：";
-			cin >> nA;
-			CreatList_R(LA, nA);
+			cin >> nA; CreatList_R(LA, nA);//创建链表LA
 			cout << "请输入链表LB的数据量：";
-			cin >> nB;
-			CreatList_R(LB, nB);
+			cin >> nB; CreatList_R(LB, nB);//创建链表LB
 			//给链表LA和LB排序
 			cout << "有序链表LA为：" << endl; ShowList(Order(LA));
 			cout << "有序链表LB为：" << endl; ShowList(Order(LB));

@@ -342,13 +342,17 @@ int main()
     {
         showMenu();
         cout << "请输入操作代码：";
-        cin >> wm;
-
+		if (!(cin >> wm))
+		{//错误输入时重新输入，防止死循环
+			cin.clear();
+			cin.ignore(1024, '\n');
+			wm = -1;
+		}
         //选择
         switch (wm)
         {
         case 1:
-            ClearList(L);
+            ClearList(L);//创建顺序表
             cout << "----顺序表已清空----" << endl;
             system("pause");
             system("cls");
@@ -356,7 +360,7 @@ int main()
 
         case 2:
             if (ListEmpty(L) == true)
-            {
+            {//判断线性表是否为空
                 cout << "该线性表为空表！\n" << endl;
             }
             else
@@ -368,7 +372,7 @@ int main()
             break;
 
         case 3:
-            cout << "该线性表的长度为: " << ListLength(L) << endl;
+            cout << "该线性表的长度为: " << ListLength(L) << endl;//线性表的长度
             system("pause");
             system("cls");
             break;
@@ -377,7 +381,7 @@ int main()
             cout << "请输入想要查找元素的位置 i=";
             cin >> i;
             ElemType e_Get;
-            if (GetElem(L, i, e_Get) == ERROR)
+            if (GetElem(L, i, e_Get) == ERROR)//查找某一位置的元素
                 cout << "--ERROR-- i值不合理！" << endl;
             else
                 cout << "第" << i << "位元素的值为：" << e_Get << "\n" << endl;
@@ -390,7 +394,7 @@ int main()
             ElemType pre_e;
             cout << "请输入要查询前驱的数据：";
             cin >> cur_e;
-            PriorElem(L, cur_e, pre_e);
+            PriorElem(L, cur_e, pre_e);//查找前驱
             system("pause");
             system("cls");
             break;
@@ -399,7 +403,7 @@ int main()
             ElemType next_e;
             cout << "请输入要查询后继的数据：";
             cin >> cur_e;
-            NextElem(L, cur_e, next_e);
+            NextElem(L, cur_e, next_e);//查找后继
             system("pause");
             system("cls");
             break;
@@ -409,7 +413,7 @@ int main()
             int i_Ins, e_Ins;
             cout << "请输入要插入元素的位置和数据:" << endl;
             cin >> i_Ins >> e_Ins;
-            if (ListInsert(L, i_Ins, e_Ins) != ERROR)
+            if (ListInsert(L, i_Ins, e_Ins) != ERROR)//插入元素，若返回ERROR,则插入失败
                 cout << "插入成功！" << endl;
             system("pause");
             system("cls");
@@ -422,7 +426,7 @@ int main()
             cout << "请输入要删除的元素的位置" << endl;
             cin >> i;
             cout << "----正在删除第" << i << "位元素----" << endl;
-            ListDelete(L, i);
+            ListDelete(L, i);//删除元素
             system("pause");
             system("cls");
             break;
@@ -430,13 +434,13 @@ int main()
 
         case 9:
             cout << "当前线性表为：" << endl;
-            PrintList(L);
+            PrintList(L);//打印线性表
             system("pause");
             system("cls");
             break;
 
         case 10:
-            Operation();
+            Operation();//集合的操作
             system("pause");
             system("cls");
             break;

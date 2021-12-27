@@ -240,32 +240,32 @@ void ShortestPath_DIJ(AMGraph G, int v0)
 			}//if
 	}//for
 /*---------------利用Path中对应的前驱，求得最短路径---------------*/
-	VerTexType vk; int k; i = 0;
-	int* path = new int[MVNum];
+	VerTexType vk; int k;
+	int* path = new int[MVNum];//path[]用于存放最短路径经过的结点的位置
 	while (true)
 	{
+		i = 0;
 		cout << "请输入终点(输入‘#’退出)：";
 		if ((cin >> vk)&&(vk=='#'))
 			break;
-		k = LocateVex(G, vk);
+		k = LocateVex(G, vk);//获取终点vk的位置
 		if (k == -1||k==0)
-		{
+		{//判断位置是否合法
 			cout << "终点不合法，请重新输入！" << endl;
 			continue;
 		}
-		path[i++] = k;
+		path[i++] = k;//将vk的位置存入path[]
 		while (Path[k] != 0)
-		{
+		{//依次在path[]中存放最短路径经过的结点的位置
 			path[i++] = Path[k];
 			k = Path[k];
 		}
-		cout << G.vexs[v0] << "到" << vk << "的最短路径为：" << endl;
-		cout << G.vexs[v0];
-		for (i=i-1; i >= 0; --i)
+		cout << G.vexs[v0] << "到" << vk << "的最短路径为：" << endl << G.vexs[v0];
+		for (i=i-1; i >= 0; --i)//按位置倒序输出结点，即为最短路径
 			cout << "->" << G.vexs[path[i]];
 		cout << endl;
 	}
-	delete[] S, D, Path, path;
+	delete[] S, D, Path, path;//删除临时空间
 }
 
 
@@ -286,10 +286,10 @@ void ShowMenu()
 int main()
 {
 	AMGraph G1; ALGraph G2{};
-	InitGraph(G1);
+	InitGraph(G1);//初始化图
 	int wm = 0, end = 0, vex = 0;
 	VerTexType v;
-	ShowMenu();
+	ShowMenu();//菜单
 	while (true)
 	{
 		cout << "请输入操作代码：";
@@ -302,19 +302,19 @@ int main()
 		//1 2 5 1 3 3 2 4 1 2 5 3 2 6 6 3 5 8 3 6 7 4 7 3 5 7 5 5 8 2 6 7 6 6 8 6 7 9 4 8 9 3
 		switch (wm)
 		{
-		case 1:
+		case 1://邻接矩阵表示法建图
 			if (CreateUDN(G1))
 				cout << "创建成功！" << endl;
 			else
 				cout << "创建失败！" << endl;
 			break;
-		case 2:
+		case 2://邻接表表示法建图
 			if (CreateUDG(G2))
 				cout << "创建成功！" << endl;
 			else
 				cout << "创建失败！" << endl;
 			break;
-		case 3:
+		case 3://深度优先搜索 DFS_AM
 			if (G1.vexnum == 0 || G1.arcnum == 0)
 			{//无向网未创建时终止操作
 				cout << "操作失败！无向网未创建！" << endl;
@@ -332,7 +332,7 @@ int main()
 			DFS_AM(G1, vex - 1);
 			cout<<endl;
 			break;
-		case 4:
+		case 4://深度优先搜索 DFS_AL
 			if (G2.vexnum == 0 || G2.arcnum == 0)
 			{//无向网未创建时终止操作
 				cout << "操作失败！无向网未创建！" << endl;
@@ -350,7 +350,7 @@ int main()
 			DFS_AL(G2, vex - 1);
 			cout << endl;
 			break;
-		case 5:
+		case 5://广度优先搜索 BFS_AM
 			if (G1.vexnum == 0 || G1.arcnum == 0)
 			{//无向网未创建时终止操作
 				cout << "操作失败！无向网未创建！" << endl;
@@ -368,7 +368,7 @@ int main()
 			BFS_AM(G1, vex - 1);
 			cout << endl;
 			break;
-		case 6:
+		case 6://广度优先搜索 BFS_AL
 			if (G2.vexnum == 0 || G2.arcnum == 0)
 			{//无向网未创建时终止操作
 				cout << "操作失败！无向网未创建！" << endl;
@@ -386,7 +386,7 @@ int main()
 			BFS_AL(G2, vex - 1);
 			cout << endl;
 			break;
-		case 7:
+		case 7://迪杰斯特拉算法 DIJ
 			if (G1.vexnum == 0 || G1.arcnum == 0)
 			{
 				cout << "图未创建！" << endl;
@@ -394,7 +394,7 @@ int main()
 			}
 			cout << "请输入起始点：";
 			cin >> v;
-			ShortestPath_DIJ(G1, LocateVex(G1, v));
+			ShortestPath_DIJ(G1, LocateVex(G1, v));//调用ShortestPath_DIJ()函数，LocateVex()为起始点的位置
 			break;
 		case 0:
 			cout << "确定要退出吗？\n（按‘1’确认退出，‘其他键’取消）" << endl;
